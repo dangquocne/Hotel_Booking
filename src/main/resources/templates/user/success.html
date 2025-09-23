@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section>
+    <div class="container mt-5 p-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="card shadow-lg p-4 rounded-4 border-0">
+                    <div class="card-body">
+
+                        <!-- Hình ảnh cảm ơn -->
+                        <img src="https://cdn-icons-png.flaticon.com/512/9465/9465154.png"
+                             alt="Thank You" width="120" class="mb-4" />
+
+                        <!-- Tiêu đề -->
+                        <h2 class="fw-bold mb-3 text-success">Thank you for your reservation!</h2>
+
+                        <!-- Thông báo -->
+                        <p class="fs-5 text-muted mb-4">Chúng tôi đã nhận được thông tin đặt phòng của bạn. Bộ phận lễ tân sẽ liên hệ sớm để xác nhận lại thông tin.</p>
+
+                        <!-- Các nút điều hướng -->
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                            <a href="/" class="btn btn-outline-primary px-4 me-sm-3">🏠 Home</a>
+                            <a href="/user/user-booking" class="btn btn-primary px-4">📄 My Booking</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

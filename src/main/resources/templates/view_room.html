@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<section class="p-3">
+
+    <div class="container bg-light " style="margin-top: 70px;margin-bottom: 100px;">
+        <div class="row">
+                <!-- Hien thi thong bao -->
+                <th:block th:if="${session.sucMsg}">
+                    <p class="text-success fw-bold text-center">[[${session.sucMsg}]]</p>
+                    <!-- thuc hien de xoa thong bao -->
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                </th:block>
+
+                <th:block th:if="${session.errorMsg}">
+                    <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+                    <!-- thuc hien de xoa thong bao -->
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                </th:block>
+            <!-- Carousel -->
+            <div class="col-md-6 p-3">
+                <div id="roomCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+<!--                            <img src="img/room_img/room1.jpg" class="d-block w-100" alt="...">-->
+                            <img alt="" th:src="@{'/img/room_img/'+${room.image1}}" class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="" th:src="@{'/img/room_img/'+${room.image2}}" class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img alt="" th:src="@{'/img/room_img/'+${room.image3}}" class="d-block w-100">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#roomCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Room Detail -->
+            <div class="col-md-6 p-4">
+                <h5 class="fw-bold">[[${room.title}]]</h5>
+<!--                <p class="text-muted">[[${room.description}]]</p>-->
+                <p>A Standard Double room with a beautiful view.</p>
+
+                <h5><strong>Details</strong></h5>
+                <p>Price per night:<span class="text-decoration-line-through text-secondary"><strong>$[[${room.price}]]</strong>VND</span> <strong>[[${room.discountPrice}]]VND</strong>
+                    </span> <span class="fs-6 text-success">[[${room.discount}]]% off</span></p>
+                <p>Size: 35 sqm</p>
+                <p>Bed Type: [[${room.roomType}]]</p>
+
+                <h5><strong>Amenities</strong></h5>
+                <ul>
+                    <li>Free WiFi</li>
+                    <li>Air Conditioning</li>
+                    <li>Room Service</li>
+                    <li>Mini Bar</li>
+                </ul>
+
+            <th:block th:if="${room.roomNumber > 0}">
+                <th:block th:if="${user==null}">
+                    <a href="/signin" class="btn btn-custom ms-3">Chose</a>
+
+                    <a href="/signin" class="btn btn-custom ms-3">Book Now</a>
+                </th:block>
+
+                <th:block th:if="${user!=null}">
+                    <a  th:href="@{'/user/addBookingList?rid='+${room.id}+'&uid='+${user.id}}" class="btn btn-custom ms-3">Choose</a>
+
+                    <a th:href="@{'/user/loadBookingRoom/'+${room.id}}" class="btn btn-custom ms-3">Book Now</a>
+                </th:block>
+            </th:block>
+
+                <th:block th:unless="${room.roomNumber > 0}">
+                    <a href="#" class="btn btn-secondary col-md-12">Sorry, all rooms are fully booked.</a>
+
+                </th:block>
+            </div>
+
+        </div>
+        <div class="row mt-3">
+            <h5 class="fw-bold">Room Description Details</h5>
+            <p class="mb-5">[[${room.description}]]</p>
+        </div>
+    </div>
+
+
+    <!-- Reviews Section -->
+    <div class="container bg-light mb-5 p-3">
+        <h4 class="mb-4 p-3">Recent Review & Rating </h4>
+
+        <!-- Existing Comment -->
+        <div class="card mb-4 shadow-sm" th:each="rv:${reviews}">
+            <div class="card-body position-relative">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle overflow-hidden bg-light d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
+                        <img th:src="@{'/img/profile_img/' + ${rv.user.getProfileImage()}}" th:alt="${rv.user.name}" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">[[${rv.user.name}]]</h6>
+                        <small class="text-muted">[[${rv.date}]]</small>
+                    </div>
+
+                    <!-- Nút 3 chấm bên phải -->
+                    <th:block th:if="${user!=null}">
+                    <th:block th:if="${user.id==rv.user.id}">
+
+                        <div class="ms-auto dropdown">
+                            <button class="btn btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a class="dropdown-item text-primary" href="#" th:data-id="${rv.id}" th:data-comment="${rv.comment}" th:data-rating="${rv.rating}"
+                                       onclick="toggleEdit(this); return false;" >
+                                        Edit
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item text-danger" th:href="@{'/delete-reviews?id='+${rv.id} +'&roomId='+${room.id}}" >Delete</a></li>
+                            </ul>
+                        </div>
+
+                    </th:block>
+                    </th:block>
+                </div>
+
+
+                <!-- Rating -->
+                <div id="viewMode">
+                <div class="mb-2">
+                    <th:block th:if="${rv.getRating()==5}">
+                        <span class="text-warning">★★★★★</span>
+                    </th:block>
+                    <th:block th:if="${rv.getRating()==4}">
+                        <span class="text-warning">★★★★</span>
+                    </th:block>
+                    <th:block th:if="${rv.getRating()==3}">
+                        <span class="text-warning">★★★</span>
+                    </th:block>
+                    <th:block th:if="${rv.getRating()==2}">
+                        <span class="text-warning">★★</span>
+                    </th:block>
+                    <th:block th:if="${rv.getRating()==1}">
+                        <span class="text-warning">★</span>
+                    </th:block>
+                </div>
+
+                <!-- Comment content -->
+                <p>[[${rv.comment}]]</p>
+            </div>
+
+
+                <th:block th:if="${user!=null}">
+                    <th:block th:if="${user.id==rv.user.id}">
+                <!-- Edit Mode (hidden by default) -->
+                <form id="editMode" style="display: none;" action="/update-reviews" method="post" >
+                    <div class="mb-2">
+
+                        <input type="hidden" id="editReviewId" name="id">
+                        <input type="hidden" name="room" th:value="${room.id}">
+                        <label class="form-label">Đánh giá mới:</label>
+                        <select class="form-select" id="editRating" name="rating" required style="width: auto;">
+                            <option value="5" selected>5 ★</option>
+                            <option value="4">4 ★</option>
+                            <option value="3">3 ★</option>
+                            <option value="2">2 ★</option>
+                            <option value="1">1 ★</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <textarea class="form-control" id="editComment" name="comment" rows="3" >aksdk</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    <button type="button" class="btn btn-link btn-sm" onclick="toggleEdit(this);">Cancel</button>
+                </form>
+                    </th:block>
+                </th:block>
+
+
+            </div>
+        </div>
+
+
+
+
+<!--  Add Comment Form -->
+        <th:block th:if="${user!=null}">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form action="/save-reviews" method="post">
+                    <div class="mb-3 ">
+                        <label class="form-label">Your review:</label>
+                        <input type="hidden" name="room" th:value="${room.id}">
+                        <select class="form-select" id="ratingSelect" name="rating" required style="width: auto;">
+                            <option >-- Select rating--</option>
+                            <option value="5">5 ★</option>
+                            <option value="4">4 ★</option>
+                            <option value="3">3 ★</option>
+                            <option value="2">2 ★</option>
+                            <option value="1">1 ★</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea class="form-control" name="comment" rows="3" placeholder="Enter comment..."></textarea>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary w-20">Add comment</button>
+                </form>
+
+            </div>
+        </div>
+        </th:block>
+
+    </div>
+
+
+    <!-- Javascript hỗ trợ bật/tắt Edit -->
+    <script>
+        function toggleEdit(element) {
+            const reviewId = element.getAttribute('data-id');
+            const comment = element.getAttribute('data-comment');
+            const rating = element.getAttribute('data-rating');
+
+            console.log(reviewId, comment, rating); // Kiểm tra giá trị để debug
+
+            const view = document.getElementById('viewMode');
+            const edit = document.getElementById('editMode');
+
+            document.getElementById('editReviewId').value = reviewId;
+            document.getElementById('editRating').value = rating;
+            document.getElementById('editComment').value = comment;
+
+            if (view.style.display === 'none') {
+                view.style.display = 'block';
+                edit.style.display = 'none';
+            } else {
+                view.style.display = 'none';
+                edit.style.display = 'block';
+            }
+        }
+
+        function deleteReview() {
+            if (confirm('Bạn có chắc muốn xóa bình luận này không?')) {
+                // Xử lý xóa ở đây
+                alert('Đã xóa!');
+            }
+        }
+    </script>
+
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section>
+
+    <div class="container p-5 mt-5  ">
+        <h2 class="text-center mb-2" style="font-family: 'Times New Roman', cursive; font-weight: bold;">CONTACT US</h2>
+        <p class="text-center mb-5">Contact us and give us your feedback</p>
+        <div class="row">
+
+            <!-- Cột bản đồ và thông tin -->
+            <div class="col-md-6">
+                <div class="card shadow p-2 mb-2 bg-body-tertiary">
+                    <!-- Google Map -->
+                    <div class="mb-3">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d865.5893461853356!2d108.25516914954598!3d15.978139571591369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142108e97e3009b%3A0xb99220b17c7574f9!2zQ2FmZSBWw6BuaCDEkGFp!5e0!3m2!1svi!2sus!4v1746500734346!5m2!1svi!2sus"
+                                width="490" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+
+                    <!-- Địa chỉ và liên hệ -->
+                    <div>
+                        <h5><strong>Address</Address></strong></h5>
+                        <p><i class="bi bi-geo-alt-fill"></i> Hoa Hai, 42 Tran Dai Nghia,Ngu Hanh Son, Da Nang</p>
+
+                        <h5><strong>Contact Hotline</strong></h5>
+                        <p><i class="bi bi-telephone-fill"></i> +84905923427</p>
+                        <p><i class="bi bi-telephone-fill"></i> +84775453931</p>
+
+                        <h5><strong>Email</strong></h5>
+                        <p><i class="bi bi-envelope-fill"></i>huynhdangquoc@gmail.com</p>
+
+                        <h5><strong>Follow Now</strong></h5>
+                        <a href="#"> <i class="fab fa-facebook-square fs-4 me-3 text-black"></i></a>
+                        <a href="#">  <i class="fab fa-instagram fs-4 text-black"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột form -->
+            <div class="col-md-6">
+                <div class="card shadow p-3 mb-2 bg-body-tertiary">
+                    <h5><strong>Send Message</strong></h5>
+                    <!-- Hien thi thong bao -->
+                    <th:block th:if="${session.sucMsg}">
+                        <p class="text-success fw-bold">[[${session.sucMsg}]]</p>
+                        <!-- thuc hien de xoa thong bao -->
+                        <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                    </th:block>
+
+                    <th:block th:if="${session.errorMsg}">
+                        <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                        <!-- thuc hien de xoa thong bao -->
+                        <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                    </th:block>
+
+                    <form action="/saveContact" method="post" id="contacts">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label  class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter your email"required>
+                        </div>
+                        <div class="mb-3">
+                            <label  class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" placeholder="Enter title"required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" name="message" rows="4" placeholder="Enter message..."required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

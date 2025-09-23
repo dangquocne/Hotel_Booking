@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section>
+    <div class="container-fluid mt-5 p-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <p class="text-center fs-4 fw-bold">My Booking</p>
+                <!-- Hien thi thong bao -->
+                <th:block th:if="${session.sucMsg}">
+                    <p class="text-success fw-bold">[[${session.sucMsg}]]</p>
+                    <!-- thuc hien de xoa thong bao -->
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                </th:block>
+
+                <th:block th:if="${session.errorMsg}">
+                    <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                    <!-- thuc hien de xoa thong bao -->
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"> </th:block>
+                </th:block>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered  table-striped">
+                    <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Booking Id</th>
+                        <th scope="col">Booking Date</th>
+                        <th scope="col">Room Detail</th>
+                        <th scope="col">Check In</th>
+                        <th scope="col">Check Out</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="b:${bookings}">
+                        <th scope="row">[[${b.bookingId}]]</th>
+                        <td>[[${b.bookingDate}]]</td>
+                        <td>[[${b.room.title}]]</td>
+                        <td>[[${b.checkIn}]]</td>
+                        <td>[[${b.checkOut}]]</td>
+                        <td class="text-center">[[${b.quantity}]]</td>
+                        <td> Quantity: [[${b.quantity}]] <br>
+                            Price : [[${b.price}]] <br>
+                            Total Day : [[${b.totalDay}]] <br>
+                            Total price: [[${b.quantity*b.price*b.totalDay}]]</td>
+                        <td>[[${b.status}]]</td>
+                        <td>
+
+                            <th:block th:if="${b.status!='Cancelled'}">
+                                <a th:href="@{'/user/update-status?id='+${b.id}+'&st=3'}"  class="btn btn-danger btn-sm">Cancel</a>
+                            </th:block>
+
+
+
+                            <th:block th:unless="${b.status!='Cancelled'}">
+                                <a href="#" class="btn btn-danger btn-sm disabled" aria-disabled="true">Cancel</a>
+                            </th:block>
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
